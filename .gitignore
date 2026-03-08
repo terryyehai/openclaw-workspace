@@ -1,0 +1,22 @@
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+
+# Node/OpenClaw cache
+.node/
+.openclaw/
+.clawhub/
+
+# Large backups (we'll commit smaller stuff)
+# backups/*.jsonl
+# backups/*.json
+backups/
+
+# Webapp build
+webapp/node_modules/
+webapp/dist/
