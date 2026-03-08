@@ -1,0 +1,21 @@
+{
+  "total_value": 100000.0,
+  "cash": 81100.0,
+  "profit": 0.0,
+  "profit_pct": 0.0,
+  "benchmark": 6.884557500962685,
+  "vs_benchmark": -6.884557500962685,
+  "holdings": [
+    {
+      "symbol": "2330.TW",
+      "name": "台積電",
+      "quantity": 10,
+      "avg_cost": 1890.0,
+      "current_price": 1890.0,
+      "value": 18900.0,
+      "profit": 0.0,
+      "profit_pct": 0.0
+    }
+  ],
+  "updated": "2026-03-08 22:07"
+}
