@@ -27,3 +27,6 @@ OPENWEATHERMAP_API_KEY
 NVIDIA_API_KEY
 FIGMA_API_KEY
 *.env
+
+# Private memory (contains sensitive info)
+MEMORY.md
