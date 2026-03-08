@@ -20,3 +20,10 @@ backups/
 # Webapp build
 webapp/node_modules/
 webapp/dist/
+
+# API Keys
+CWA_API_KEY
+OPENWEATHERMAP_API_KEY
+NVIDIA_API_KEY
+FIGMA_API_KEY
+*.env
