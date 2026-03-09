@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "click_wait_ms": 1000,
+  "fill_wait_ms": 500,
+  "page_load_timeout_ms": 30000,
+  "retry_count": 3,
+  "retry_delay_ms": 2000,
+  "selectors_priority": [
+    "aria-label",
+    "data-testid",
+    "id",
+    "class",
+    "xpath"
+  ],
+  "error_handling": {
+    "popup_action": "dismiss",
+    "timeout_action": "retry",
+    "error_action": "screenshot_and_continue"
+  },
+  "adaptive": {
+    "enabled": true,
+    "learn_from_errors": true,
+    "adjust_wait_times": true
+  }
+}
