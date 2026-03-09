@@ -37,4 +37,33 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
-Add whatever helps you do your job. This is your cheat sheet.
+## 🎮 AI Operator System
+
+**路徑**: `~/.openclaw/ai-operator/`
+
+### 啟動
+```bash
+source ~/.openclaw/ai-operator/bin/activate
+```
+
+### 執行自我進化
+```bash
+python -c "from evaluation.evolution_engine import evolution_engine; evolution_engine.run_self_optimization()"
+```
+
+### 健康檢查
+```bash
+python -c "from self_update.self_corrector import health_checker; print(health_checker.run_checks())"
+```
+
+### 版本
+- 當前: 1.0.0
+- 健康分數: 100%
+
+---
+
+## 🌐 瀏覽器
+
+- **Chrome**: `/usr/bin/google-chrome-stable` (安裝於 2026-03-09)
+- **控制方式**: OpenClaw browser tool
+- **遊戲測試工具**: https://gp001-qa1-simulation.xwautc.online/index
