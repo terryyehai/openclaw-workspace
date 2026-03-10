@@ -1,0 +1,106 @@
+{
+  "projectName": "SLOT 遊戲 QA 自動化",
+  "projectVersion": "v1.0",
+  "lastUpdated": "2026-03-05T06:30:00Z",
+  "description": "Specs 動態版本管理 — 自動檢測檔案更新並注入執行上下文",
+  "specs": [
+    {
+      "id": "demo-mode-spec",
+      "name": "DEMO MODE 遊戲規格",
+      "path": "specs/Demo Mode-spec.docx",
+      "format": "docx",
+      "version": "v1.0",
+      "updatedAt": "2026-03-05T06:20:00Z",
+      "changeType": "new",
+      "priority": "high",
+      "summary": "完整的 DEMO MODE 功能規格文件 + 測試 SOP（4 步驟）",
+      "sections": [
+        "遊戲功能選擇頁面",
+        "DEMO MODE 遊戲頁面",
+        "測試流程 SOP"
+      ],
+      "tags": [
+        "demo-mode",
+        "sop",
+        "testing",
+        "gameplay"
+      ],
+      "relatedScripts": [
+        "scripts/functional/demo-mode-spin.xlsx",
+        "scripts/functional/demo-mode-features.xlsx"
+      ],
+      "notes": "排版參考 slot-game-spec-v2.docx 風格，圖片已加標題標註"
+    },
+    {
+      "id": "slot-game-spec-v2",
+      "name": "SLOT 遊戲規格參考標準",
+      "path": "specs/slot-game-spec-v2.docx",
+      "format": "docx",
+      "version": "v2.0",
+      "updatedAt": "2026-01-15T10:00:00Z",
+      "changeType": "stable",
+      "priority": "high",
+      "summary": "遊戲玩法、UI 區域、座標表、功能說明（排版標準參考）",
+      "sections": [
+        "遊戲測試工具頁面",
+        "登入流程與 Loading Bar",
+        "遊戲功能選擇頁面",
+        "遊戲遊玩頁面",
+        "活動功能收納區",
+        "設定選單",
+        "特殊功能"
+      ],
+      "tags": [
+        "reference",
+        "gameplay",
+        "ui-layout",
+        "coordinate-system"
+      ],
+      "relatedScripts": [
+        "scripts/regression/full-regression.xlsx"
+      ],
+      "notes": "作為所有新 spec 檔案的排版標準和內容參考"
+    }
+  ],
+  "versionHistory": [
+    {
+      "version": "v1.0",
+      "releaseDate": "2026-03-05",
+      "changes": [
+        "初版發佈：Demo Mode-spec 完整規格",
+        "引入 manifest.json 版本控制機制",
+        "定義 changeType 分類（new / modified / stable / deprecated）"
+      ]
+    }
+  ],
+  "upcomingSpecs": [
+    {
+      "id": "game-features-catalog",
+      "name": "各遊戲 FEATURE 清單",
+      "plannedFormat": "xlsx",
+      "description": "按 Game ID 集中列出各遊戲的 FEATURE（免費遊戲、倍數加成等）",
+      "eta": "2026-03-15"
+    },
+    {
+      "id": "cross-game-coordinates",
+      "name": "跨遊戲座標表統整",
+      "plannedFormat": "json",
+      "description": "將各遊戲的座標覆寫集中管理（目前分散在 Excel Config sheet）",
+      "eta": "2026-03-20"
+    }
+  ],
+  "updateGuidelines": {
+    "onNewSpec": "新增 spec 檔案時，務必在此 manifest.json 新增對應項目，設定 changeType='new'",
+    "onModifiedSpec": "修改現有 spec 時，更新 version、updatedAt、summary、changeType='modified'",
+    "onDeprecatedSpec": "棄用 spec 時，保留條目但設定 changeType='deprecated'，並在 LATEST_CHANGES.md 註記",
+    "versionFormat": "遵循語義化版本（v1.0, v1.1, v2.0）",
+    "timestampFormat": "ISO 8601（2026-03-05T06:30:00Z）"
+  },
+  "qaInitializationRules": {
+    "readManifest": "每次執行任務前必讀取此檔案",
+    "detectChanges": "比對 updatedAt 與上次執行時間戳，識別 changeType='new|modified' 的項目",
+    "loadSpecs": "自動讀取新增/修改的 spec 檔案，注入執行 context",
+    "reportChanges": "向使用者報告已載入的更新（格式：『🔄 已檢測 {spec名稱} v{版本} 更新』）",
+    "specialHandling": "若更新涉及座標變更：重讀 Excel Config sheet；若涉及流程變更：提示使用者確認"
+  }
+}

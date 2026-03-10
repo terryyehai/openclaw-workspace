@@ -1,0 +1,140 @@
+{
+  "version": "1.1",
+  "lastUpdated": "2026-03-05",
+  "description": "SLOT Game QA 測試腳本註冊表。每份 Excel 測試腳本需在此註冊後才能被 RunTest 指令調用。",
+  "schema": {
+    "excelSheets": {
+      "Meta": "腳本基本資訊（名稱、版本、適用遊戲、作者、更新日期）",
+      "Steps": "測試步驟定義（StepID / Action / Target / Input / Expected / VerifyMethod / OnFail / Note）",
+      "Config": "遊戲專屬座標覆寫與環境參數（GameID / OverrideCoords / URL / Params）",
+      "Changelog": "變更紀錄（Date / Version / Description）"
+    },
+    "actionTypes": [
+      "navigate",
+      "click",
+      "screenshot",
+      "wait",
+      "verify_text",
+      "verify_balance",
+      "spin",
+      "find_and_click",
+      "find_and_verify",
+      "scroll",
+      "key_press"
+    ],
+    "verifyMethods": [
+      "screenshot",
+      "text_match",
+      "balance_calc",
+      "element_exists",
+      "element_not_exists",
+      "visual_check"
+    ],
+    "onFailOptions": [
+      "log",
+      "retry",
+      "abort",
+      "skip"
+    ]
+  },
+  "scripts": [
+    {
+      "id": "full-regression",
+      "name": "完整迴歸測試",
+      "description": "涵蓋模塊一～六的完整快速迴歸測試，等同原 AutoTest 全流程",
+      "path": "regression/full-regression.xlsx",
+      "category": "regression",
+      "modules": ["M1", "M2", "M3", "M4", "M5", "M6"],
+      "estimatedTime": "25min",
+      "batchStrategy": "auto-5",
+      "games": ["all"],
+      "tags": ["regression", "full", "all-modules"]
+    },
+    {
+      "id": "spin-balance",
+      "name": "SPIN 與 BALANCE 驗算",
+      "description": "專注模塊四的 SPIN 操作與 BALANCE 驗算，含 BET 調整、Auto Play、即停功能",
+      "path": "regression/spin-balance.xlsx",
+      "category": "regression",
+      "modules": ["M4"],
+      "estimatedTime": "8min",
+      "batchStrategy": "single",
+      "games": ["all"],
+      "tags": ["spin", "balance", "bet", "core"]
+    },
+    {
+      "id": "loading-verify",
+      "name": "Loading Page 驗證",
+      "description": "驗證 Loading Page 翻頁邏輯、多語言按鈕文字、進入遊戲流程",
+      "path": "regression/loading-verify.xlsx",
+      "category": "regression",
+      "modules": ["M2"],
+      "estimatedTime": "5min",
+      "batchStrategy": "single",
+      "games": ["all"],
+      "tags": ["loading", "pagination", "i18n"]
+    },
+    {
+      "id": "activity-menu",
+      "name": "活動功能選單測試",
+      "description": "VP Logo 選單下的 USER 區塊（BAG/INBOX/NEWS/USER）與 FUNCTION 區塊（TASK/RANK/WHEEL/LOTTO/DAILY）",
+      "path": "functional/activity-menu.xlsx",
+      "category": "functional",
+      "modules": ["M5"],
+      "estimatedTime": "12min",
+      "batchStrategy": "auto-2",
+      "games": ["all"],
+      "tags": ["vp-logo", "activity", "menu", "bag", "inbox", "task", "rank"]
+    },
+    {
+      "id": "settings-panel",
+      "name": "設定選單測試",
+      "description": "齒輪選單下的功能測試（RECORD/AUTO/INFO）與開關測試（SOUND/NOTIFY/CLOSE）",
+      "path": "functional/settings-panel.xlsx",
+      "category": "functional",
+      "modules": ["M6"],
+      "estimatedTime": "8min",
+      "batchStrategy": "auto-2",
+      "games": ["all"],
+      "tags": ["settings", "gear", "sound", "notify", "auto", "record"]
+    },
+    {
+      "id": "quick-smoke",
+      "name": "快速冒煙測試",
+      "description": "最小範圍驗證：登入 → Loading → 3 次 SPIN（含 BALANCE 驗算）→ 設定列開關，確認遊戲基本可玩",
+      "path": "smoke/quick-smoke.xlsx",
+      "category": "smoke",
+      "modules": ["M1", "M2", "M4"],
+      "estimatedTime": "5min",
+      "batchStrategy": "single",
+      "games": ["all"],
+      "tags": ["smoke", "quick", "sanity", "basic"]
+    },
+    {
+      "id": "demo-mode-regression",
+      "name": "Demo Mode 完整迴歸測試",
+      "description": "Demo Mode 完整測試：Login → Loading Page（點擊 DEMO MODE 按鈕）→ DEMO 標籤確認 → 多 BET SPIN Credit 驗算（初始/+2/最大/最小 BET）→ Auto Play / 即停 → VP Logo 選單（USER+FUNCTION 全部頁籤）→ 設定選單（6功能）→ 特殊功能（Buy Bonus / 掉卡 ICON）",
+      "path": "regression/demo-mode-regression.xlsx",
+      "category": "regression",
+      "modules": ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8"],
+      "estimatedTime": "30min",
+      "batchStrategy": "auto-5",
+      "games": ["all"],
+      "tags": ["demo", "regression", "full", "multi-bet", "ui", "all-modules"],
+      "notes": "v2 新增：Demo Mode 獨立腳本，含多 BET 驗算與完整 UI 點擊。依據 slot-game-spec-v2.docx 建立。"
+    },
+    {
+      "id": "play-real-regression",
+      "name": "PLAY REAL 完整迴歸測試",
+      "description": "PLAY REAL 模式完整測試：Login → Loading Page（點擊 PLAY REAL 按鈕）→ 模式確認（無 DEMO 標籤）→ 多 BET SPIN Credit 驗算 → Credit 持久化驗證（重整後不重置）→ Auto Play / 即停 → VP Logo 選單（全部）→ 設定選單（全部）→ 特殊功能",
+      "path": "regression/play-real-regression.xlsx",
+      "category": "regression",
+      "modules": ["M1", "M2", "M3", "M4", "M4X", "M5", "M6", "M7", "M8"],
+      "estimatedTime": "30min",
+      "batchStrategy": "auto-5",
+      "games": ["all"],
+      "tags": ["play-real", "regression", "full", "multi-bet", "ui", "all-modules", "credit-persist"],
+      "notes": "v2 新增：PLAY REAL 獨立腳本，含 Credit 持久化驗證（M4X）。依據 slot-game-spec-v2.docx 建立。"
+    }
+  ]
+}
