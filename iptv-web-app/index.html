@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Player</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- HLS.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="menu-btn" id="menuBtn" aria-label="選單">
+                    <i data-lucide="menu"></i>
+                </button>
+                <h1 class="logo">
+                    <i data-lucide="tv-2"></i>
+                    <span>IPTV</span>
+                </h1>
+            </div>
+            <div class="header-center">
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="searchInput" placeholder="搜尋頻道...">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="settingsBtn" aria-label="設置">
+                    <i data-lucide="settings"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <div class="nav-item active" data-view="all">
+                            <i data-lucide="globe"></i>
+                            <span>所有頻道</span>
+                            <span class="badge" id="allCount">0</span>
+                        </div>
+                        <div class="nav-item" data-view="favorites">
+                            <i data-lucide="heart"></i>
+                            <span>我的最愛</span>
+                            <span class="badge favorite-badge" id="favCount">0</span>
+                        </div>
+                        <div class="nav-item" data-view="custom">
+                            <i data-lucide="plus-circle"></i>
+                            <span>自訂頻道</span>
+                            <span class="badge" id="customCount">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-divider"></div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">國家</div>
+                        <div id="countryList" class="country-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Player Section -->
+                <section class="player-section">
+                    <div class="player-wrapper">
+                        <video id="videoPlayer" playsinline></video>
+                        <div class="player-overlay" id="playerOverlay">
+                            <div class="play-btn-large" id="playBtnLarge">
+                                <i data-lucide="play"></i>
+                            </div>
+                        </div>
+                        <div class="player-controls" id="playerControls">
+                            <div class="controls-left">
+                                <button class="control-btn" id="playPauseBtn">
+                                    <i data-lucide="play"></i>
+                                </button>
+                                <div class="volume-control">
+                                    <button class="control-btn" id="volumeBtn">
+                                        <i data-lucide="volume-2"></i>
+                                    </button>
+                                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                                </div>
+                                <span class="current-channel" id="currentChannel">選擇頻道</span>
+                            </div>
+                            <div class="controls-right">
+                                <span class="quality-badge" id="qualityBadge">HD</span>
+                                <button class="control-btn" id="pipBtn" title="畫中畫">
+                                    <i data-lucide="picture-in-picture-2"></i>
+                                </button>
+                                <button class="control-btn" id="fullscreenBtn" title="全螢幕">
+                                    <i data-lucide="maximize"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <div class="loader"></div>
+                            <span>載入中...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Channel Grid -->
+                <section class="channel-section">
+                    <div class="section-header">
+                        <h2 id="sectionTitle">所有頻道</h2>
+                        <div class="category-tabs" id="categoryTabs">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="channel-grid" id="channelGrid">
+                        <!-- Dynamic content -->
+                    </div>
+                    <div class="empty-state" id="emptyState">
+                        <i data-lucide="tv-off"></i>
+                        <h3>沒有找到頻道</h3>
+                        <p>嘗試調整搜尋條件或新增自訂頻道</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>設置</h2>
+                <button class="modal-close" id="closeSettings">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>自動播放</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="autoplayToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>預設音量</label>
+                    <input type="range" id="defaultVolume" min="0" max="1" step="0.1" value="0.8">
+                </div>
+                <div class="setting-divider"></div>
+                <div class="setting-item">
+                    <button class="btn btn-secondary" id="clearFavorites">
+                        <i data-lucide="trash-2"></i>
+                        清除所有收藏
+                    </button>
+                </div>
+                <div class="setting-item">
+                    <button class="btn btn-secondary" id="resetChannels">
+                        <i data-lucide="refresh-cw"></i>
+                        重置頻道列表
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Channel Modal -->
+    <div class="modal" id="addChannelModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="addChannelTitle">新增頻道</h2>
+                <button class="modal-close" id="closeAddChannel">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="channelForm">
+                    <div class="form-group">
+                        <label>頻道名稱 *</label>
+                        <input type="text" id="channelName" required placeholder="例如：台視">
+                    </div>
+                    <div class="form-group">
+                        <label>M3U8 URL *</label>
+                        <input type="url" id="channelUrl" required placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Logo URL</label>
+                        <input type="url" id="channelLogo" placeholder="https://...">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>國家 *</label>
+                            <select id="channelCountry" required>
+                                <option value="taiwan">台灣</option>
+                                <option value="japan">日本</option>
+                                <option value="korea">韓國</option>
+                                <option value="china">中國</option>
+                                <option value="usa">美國</option>
+                                <option value="uk">英國</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>分類 *</label>
+                            <select id="channelCategory" required>
+                                <option value="news">新聞</option>
+                                <option value="entertainment">綜藝</option>
+                                <option value="sports">體育</option>
+                                <option value="movie">電影</option>
+                                <option value="drama">戲劇</option>
+                                <option value="cartoon">卡通</option>
+                                <option value="music">音樂</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelChannel">取消</button>
+                        <button type="submit" class="btn btn-primary">儲存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/m3u8.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
