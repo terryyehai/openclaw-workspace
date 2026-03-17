@@ -126,7 +126,24 @@ const M3U8Parser = {
     },
     
     /**
-     * Parse #EXTINF line
+     * Get fallback channels when M3U8 fails
+     */
+    getFallbackChannels() {
+        return [
+            // 台灣
+            { id: 'tw_1', name: '台視', url: 'https://www.youtube.com/watch?v=uDqQo8a7Xmk', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            { id: 'tw_2', name: '中視新聞', url: 'https://www.youtube.com/watch?v=9kypJ9f1yGw', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            { id: 'tw_3', name: '華視', url: 'https://www.youtube.com/watch?v=KH5wT9Q2e9s', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            { id: 'tw_4', name: '民視新聞', url: 'https://www.youtube.com/watch?v=l9k18YEj1vI', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            { id: 'tw_5', name: '東森新聞', url: 'https://www.youtube.com/watch?v=n4r5Y7j0Y3E', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            { id: 'tw_6', name: 'TVBS', url: 'https://www.youtube.com/watch?v=JGkC7KjC8vE', country: 'taiwan', category: 'news', logo: '', isCustom: false },
+            // 日本
+            { id: 'jp_1', name: 'NHK World', url: 'https://www.youtube.com/watch?v=nT4D1jK4B7w', country: 'japan', category: 'news', logo: '', isCustom: false },
+            // 美國
+            { id: 'us_1', name: 'Fox News', url: 'https://www.youtube.com/watch?v=iuZ8kZ8j1I0', country: 'usa', category: 'news', logo: '', isCustom: false },
+            { id: 'us_2', name: 'CNN', url: 'https://www.youtube.com/watch?v=9kA7T2B3C4D', country: 'usa', category: 'news', logo: '', isCustom: false },
+        ];
+    },
      */
     parseExtInf(line) {
         const result = {

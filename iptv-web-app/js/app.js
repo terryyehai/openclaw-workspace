@@ -310,10 +310,12 @@ const App = {
             this.showToast(`已載入 ${channels.length} 個頻道`, 'success');
         } catch (e) {
             console.error('Failed to load channels:', e);
-            this.showToast('載入頻道失敗，請檢查網路連線', 'error');
+            this.showToast('載入頻道失敗，使用備用頻道', 'warning');
             
-            // Load sample channels for offline testing
-            this.loadSampleChannels();
+            // Load fallback channels
+            const fallback = M3U8Parser.getFallbackChannels();
+            Storage.setChannels(fallback);
+            this.showToast(`已載入 ${fallback.length} 個備用頻道`, 'success');
         }
         
         this.isLoading = false;
