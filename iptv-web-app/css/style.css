@@ -613,21 +613,22 @@ body {
 
 .channel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: var(--space-md);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-lg);
     overflow-y: auto;
-    padding: var(--space-xs);
+    padding: var(--space-sm);
 }
 
 .channel-card {
     position: relative;
     background: var(--gradient-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     cursor: pointer;
     transition: all var(--transition-fast);
     overflow: hidden;
+    min-height: 160px;
 }
 
 .channel-card::before {
@@ -656,11 +657,11 @@ body {
 
 .channel-logo {
     width: 100%;
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
 }
 
 .channel-logo img {
@@ -670,17 +671,18 @@ body {
 }
 
 .channel-logo .placeholder {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--text-muted);
 }
 
 .channel-name {
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--text-primary);
 }
 
 .channel-favorite {
@@ -1124,8 +1126,8 @@ body {
     }
     
     .channel-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: var(--space-sm);
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: var(--space-md);
     }
     
     .modal-content {
@@ -1145,6 +1147,7 @@ body {
     
     .channel-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
     }
     
     .controls-left .current-channel {
