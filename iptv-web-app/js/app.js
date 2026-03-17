@@ -62,6 +62,7 @@ const App = {
             allCount: document.getElementById('allCount'),
             favCount: document.getElementById('favCount'),
             customCount: document.getElementById('customCount'),
+            recentCount: document.getElementById('recentCount'),
             countryList: document.getElementById('countryList'),
             
             // Player
