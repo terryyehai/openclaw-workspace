@@ -70,7 +70,7 @@
     
     /* Layout */
     --header-height: 60px;
-    --sidebar-width: 220px;
+    --sidebar-width: 180px;
 }
 
 /* Reset & Base */
@@ -389,7 +389,7 @@ body {
 .player-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    max-height: 35vh;
     background: #000;
     border-radius: var(--radius-lg);
     overflow: hidden;
