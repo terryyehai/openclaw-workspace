@@ -82,6 +82,7 @@ const App = {
             categoryTabs: document.getElementById('categoryTabs'),
             channelGrid: document.getElementById('channelGrid'),
             emptyState: document.getElementById('emptyState'),
+            loadingChannels: document.getElementById('loadingChannels'),
             
             // Modals
             settingsModal: document.getElementById('settingsModal'),
@@ -408,6 +409,16 @@ const App = {
      * Render channel grid
      */
     renderChannels() {
+        // Show loading state
+        if (this.isLoading) {
+            this.elements.loadingChannels.classList.add('visible');
+            this.elements.channelGrid.innerHTML = '';
+            this.elements.emptyState.classList.remove('visible');
+            return;
+        }
+        
+        this.elements.loadingChannels.classList.remove('visible');
+        
         let channels;
         
         // Get channels based on view
@@ -486,6 +497,9 @@ const App = {
             ? `<img src="${channel.logo}" alt="${channel.name}" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>📺</span>'">`
             : `<span class="placeholder">📺</span>`;
         
+        const countryFlag = M3U8Parser.getCountryFlag(channel.country);
+        const categoryName = M3U8Parser.getCategoryName(channel.category);
+        
         return `
             <div class="channel-card ${isPlaying ? 'playing' : ''}" data-id="${channel.id}">
                 <button class="channel-favorite ${isFavorite ? 'active' : ''}" aria-label="收藏">
@@ -495,6 +509,9 @@ const App = {
                     ${logoHtml}
                 </div>
                 <div class="channel-name" title="${channel.name}">${channel.name}</div>
+                <div class="channel-info">
+                    <span class="channel-badge">${countryFlag} ${categoryName}</span>
+                </div>
             </div>
         `;
     },

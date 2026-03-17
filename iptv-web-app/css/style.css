@@ -685,6 +685,20 @@ body {
     color: var(--text-primary);
 }
 
+.channel-info {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-xs);
+}
+
+.channel-badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+}
+
 .channel-favorite {
     position: absolute;
     top: var(--space-sm);
@@ -757,6 +771,35 @@ body {
 
 .empty-state p {
     font-size: 0.9rem;
+}
+
+/* Loading Channels */
+.loading-channels {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2xl);
+    color: var(--text-muted);
+    text-align: center;
+    gap: var(--space-md);
+}
+
+.loading-channels.visible {
+    display: flex;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ===================================
