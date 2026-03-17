@@ -61,7 +61,7 @@ const M3U8Parser = {
                         id: '',
                         name: info.name || 'Unknown',
                         url: '',
-                        country: this.guessCountry(info.name),
+                        country: info.country || this.guessCountry(info.name),
                         category: this.guessCategory(info.name),
                         logo: info.logo,
                         isCustom: false,
@@ -90,7 +90,8 @@ const M3U8Parser = {
         const result = {
             name: null,
             logo: null,
-            duration: 0
+            duration: 0,
+            country: null
         };
         
         // Extract duration
@@ -117,7 +118,31 @@ const M3U8Parser = {
             result.group = groupMatch[1];
         }
         
+        // Extract country from tvg-country
+        const countryMatch = line.match(/tvg-country="([^"]+)"/);
+        if (countryMatch) {
+            result.country = this.mapCountryCode(countryMatch[1]);
+        }
+        
         return result;
+    },
+    
+    /**
+     * Map country code to country name
+     */
+    mapCountryCode(code) {
+        const codeMap = {
+            'TW': 'taiwan',
+            'JP': 'japan',
+            'KR': 'korea',
+            'CN': 'china',
+            'HK': 'hongkong',
+            'SG': 'singapore',
+            'US': 'usa',
+            'UK': 'uk',
+            'GB': 'uk'
+        };
+        return codeMap[code] || 'other';
     },
     
     /**
