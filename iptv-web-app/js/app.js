@@ -4,7 +4,7 @@
 
 const App = {
     // State
-    currentView: 'all', // 'all', 'favorites', 'custom'
+    currentView: 'all', // 'all', 'favorites', 'custom', 'recent'
     currentCountry: 'all',
     currentCategory: 'all',
     searchQuery: '',
@@ -58,6 +58,7 @@ const App = {
             
             // Sidebar
             sidebar: document.getElementById('sidebar'),
+            sidebarBackdrop: document.getElementById('sidebarBackdrop'),
             allCount: document.getElementById('allCount'),
             favCount: document.getElementById('favCount'),
             customCount: document.getElementById('customCount'),
@@ -140,6 +141,13 @@ const App = {
         // Menu button
         this.elements.menuBtn.addEventListener('click', () => {
             this.elements.sidebar.classList.toggle('open');
+            this.elements.sidebarBackdrop.classList.toggle('visible');
+        });
+        
+        // Sidebar backdrop click to close
+        this.elements.sidebarBackdrop.addEventListener('click', () => {
+            this.elements.sidebar.classList.remove('open');
+            this.elements.sidebarBackdrop.classList.remove('visible');
         });
         
         // Search
@@ -349,10 +357,12 @@ const App = {
         const allChannels = Storage.getAllChannels();
         const favorites = Storage.getFavoriteChannels();
         const custom = Storage.getCustomChannels();
+        const recent = Storage.getRecentChannels();
         
         this.elements.allCount.textContent = allChannels.length;
         this.elements.favCount.textContent = favorites.length;
         this.elements.customCount.textContent = custom.length;
+        this.elements.recentCount.textContent = recent.length;
         
         // Render countries
         const countries = Storage.getCountries();
@@ -426,6 +436,10 @@ const App = {
             case 'favorites':
                 channels = Storage.getFavoriteChannels();
                 this.elements.sectionTitle.textContent = '我的最愛';
+                break;
+            case 'recent':
+                channels = Storage.getRecentChannels();
+                this.elements.sectionTitle.textContent = '最近觀看';
                 break;
             case 'custom':
                 channels = Storage.getCustomChannels();
@@ -526,11 +540,15 @@ const App = {
         this.elements.currentChannel.textContent = channel.name;
         this.elements.playerOverlay.classList.remove('hidden');
         
+        // Add to recent
+        Storage.addRecent(channel.id);
+        
         // Play
         Player.play(channel);
         
         // Update channel grid
         this.renderChannels();
+        this.renderSidebar();
     },
     
     /**

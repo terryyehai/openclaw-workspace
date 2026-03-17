@@ -28,6 +28,7 @@ const Storage = {
             channels: [],
             customChannels: [],
             favorites: [],
+            recent: [],
             settings: {
                 defaultCountry: 'taiwan',
                 autoplay: true,
@@ -135,6 +136,31 @@ const Storage = {
     isFavorite(channelId) {
         const data = this.getData();
         return data.favorites.includes(channelId);
+    },
+    
+    /**
+     * Add to recent channels
+     */
+    addRecent(channelId) {
+        const data = this.getData();
+        // Remove if already exists
+        data.recent = data.recent.filter(id => id !== channelId);
+        // Add to front
+        data.recent.unshift(channelId);
+        // Keep only last 10
+        data.recent = data.recent.slice(0, 10);
+        this.saveData(data);
+    },
+    
+    /**
+     * Get recent channels
+     */
+    getRecentChannels() {
+        const data = this.getData();
+        const allChannels = this.getAllChannels();
+        return data.recent
+            .map(id => allChannels.find(ch => ch.id === id))
+            .filter(ch => ch !== undefined);
     },
     
     /**
