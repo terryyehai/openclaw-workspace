@@ -3,21 +3,63 @@
  */
 
 const M3U8Parser = {
+    cache: new Map(),
+    cacheTimeout: 30 * 60 * 1000, // 30 minutes
+    
     /**
      * Fetch and parse M3U8 playlist
      */
-    async fetchAndParse(url) {
+    async fetchAndParse(url, forceRefresh = false) {
+        // Check cache first
+        if (!forceRefresh) {
+            const cached = this.cache.get(url);
+            if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+                console.log('Using cached channels:', cached.data.length);
+                return cached.data;
+            }
+        }
+        
         try {
-            const response = await fetch(url);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+            
+            const response = await fetch(url, { 
+                signal: controller.signal,
+                mode: 'cors'
+            });
+            clearTimeout(timeoutId);
+            
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             const text = await response.text();
-            return this.parse(text, url);
+            const channels = this.parse(text, url);
+            
+            // Cache the result
+            this.cache.set(url, {
+                data: channels,
+                timestamp: Date.now()
+            });
+            
+            return channels;
         } catch (e) {
             console.error('M3U8 fetch error:', e);
+            
+            // Try to use cached data on error
+            const cached = this.cache.get(url);
+            if (cached) {
+                console.log('Using stale cache due to fetch error');
+                return cached.data;
+            }
             throw e;
         }
+    },
+    
+    /**
+     * Clear cache
+     */
+    clearCache() {
+        this.cache.clear();
     },
     
     /**

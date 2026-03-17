@@ -136,7 +136,17 @@ const Player = {
             return true;
         } catch (e) {
             console.error('Play error:', e);
-            this.onError?.(e.message);
+            
+            let errorMsg = '播放失敗，請嘗試其他頻道';
+            if (e.name === 'AbortError') {
+                errorMsg = '連線逾時，請檢查網路';
+            } else if (e.message && e.message.includes('Failed to fetch')) {
+                errorMsg = '無法載入串流，可能頻道已下線';
+            } else if (e.message) {
+                errorMsg = `播放錯誤: ${e.message}`;
+            }
+            
+            this.onError?.(errorMsg);
             return false;
         }
     },
@@ -156,7 +166,7 @@ const Player = {
         }
         
         if (!videoId) {
-            this.onError?.('無法解析 YouTube 影片');
+            this.onError?.('無法解析 YouTube 影片網址');
             return false;
         }
         

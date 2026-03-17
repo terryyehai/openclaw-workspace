@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="description" content="IPTV Web Player - 觀看電視直播">
+    <link rel="manifest" href="manifest.json">
     <title>IPTV Player</title>
     
     <!-- Fonts -->
@@ -260,5 +263,16 @@
     <script src="js/m3u8.js"></script>
     <script src="js/player.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>
