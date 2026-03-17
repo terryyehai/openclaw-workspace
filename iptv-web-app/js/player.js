@@ -85,6 +85,11 @@ const Player = {
         // Show loading
         this.onLoading?.(true);
         
+        // Check if it's a YouTube URL
+        if (channel.url.includes('youtube.com') || channel.url.includes('youtu.be')) {
+            return this.playYouTube(channel);
+        }
+        
         try {
             // Check if HLS is supported
             if (Hls.isSupported()) {
@@ -137,6 +142,40 @@ const Player = {
     },
     
     /**
+     * Play YouTube URL via iframe embedding
+     */
+    playYouTube(channel) {
+        const videoContainer = this.video.parentElement;
+        
+        // Extract video ID from URL
+        let videoId = '';
+        if (channel.url.includes('watch?v=')) {
+            videoId = channel.url.split('watch?v=')[1].split('&')[0];
+        } else if (channel.url.includes('youtu.be/')) {
+            videoId = channel.url.split('youtu.be/')[1].split('?')[0];
+        }
+        
+        if (!videoId) {
+            this.onError?.('無法解析 YouTube 影片');
+            return false;
+        }
+        
+        // Create YouTube iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+        iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        
+        // Clear and append iframe
+        videoContainer.innerHTML = '';
+        videoContainer.appendChild(iframe);
+        
+        this.onReady?.();
+        return true;
+    },
+    
+    /**
      * Handle HLS.js errors
      */
     handleHlsError(data) {
@@ -185,8 +224,18 @@ const Player = {
             this.hls = null;
         }
         
-        this.video.src = '';
-        this.video.removeAttribute('src');
+        // Restore video element if it was replaced by YouTube iframe
+        const videoContainer = this.video.parentElement;
+        if (videoContainer.querySelector('iframe')) {
+            videoContainer.innerHTML = '';
+            videoContainer.appendChild(this.video);
+            this.video.src = '';
+            this.video.removeAttribute('src');
+        } else {
+            this.video.src = '';
+            this.video.removeAttribute('src');
+        }
+        
         this.currentChannel = null;
         this.isPlaying = false;
     },
