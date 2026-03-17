@@ -152,36 +152,20 @@ const Player = {
     },
     
     /**
-     * Play YouTube URL via iframe embedding
+     * Play YouTube URL - opens in new tab
      */
     playYouTube(channel) {
-        const videoContainer = this.video.parentElement;
+        // Open YouTube in new tab
+        window.open(channel.url, '_blank');
         
-        // Extract video ID from URL
-        let videoId = '';
-        if (channel.url.includes('watch?v=')) {
-            videoId = channel.url.split('watch?v=')[1].split('&')[0];
-        } else if (channel.url.includes('youtu.be/')) {
-            videoId = channel.url.split('youtu.be/')[1].split('?')[0];
-        }
-        
-        if (!videoId) {
-            this.onError?.('無法解析 YouTube 影片網址');
-            return false;
-        }
-        
-        // Create YouTube iframe
-        const iframe = document.createElement('iframe');
-        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
-        iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.allowFullscreen = true;
-        
-        // Clear and append iframe
-        videoContainer.innerHTML = '';
-        videoContainer.appendChild(iframe);
-        
+        // Update UI to show it's playing
         this.onReady?.();
+        
+        // Show toast message
+        if (typeof App !== 'undefined' && App.showToast) {
+            App.showToast('已在新分頁開啟 YouTube', 'info');
+        }
+        
         return true;
     },
     
